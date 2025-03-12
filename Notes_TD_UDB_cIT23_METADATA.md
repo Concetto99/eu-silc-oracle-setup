@@ -3,7 +3,7 @@
 Here some notes to extract information from the pdf guidelines file and insert rows into the new table TD_UDB_CIT23_METADATA
 
 ## Table definition:
-
+```
 CREATE TABLE C##EUSILC_SVIL.TD_UDB_CIT23_METADATA (
 	OWNER	VARCHAR2(128)
 	,TABLE_NAME	VARCHAR2(128)
@@ -19,7 +19,7 @@ CREATE TABLE C##EUSILC_SVIL.TD_UDB_CIT23_METADATA (
 	,FLAGS	VARCHAR2(4000)
 	,OTHERS	VARCHAR2(4000)
 )
-
+```
 
 ## Variables to extract from pdf file:
 	
@@ -28,24 +28,27 @@ CREATE TABLE C##EUSILC_SVIL.TD_UDB_CIT23_METADATA (
 
 ## Parsing method:
 
-Using the COLUMN_NAME called here <VARIABLE NAME>, for each column in the array of columns name's sequentially extract:
+Using the COLUMN_NAME called here [VARIABLE NAME] to inizializate the REGEX, for each column in the array of columns name's sequentially extract:
 	
-*COLUMN_DESCRIPTION:
-	"<VARIABLE NAME>:" {TEXT TO EXTRACT FOR COLUMN_DESCRIPTION} "Topic and detailed topic:"
-
-*VALUES_AND_FORMAT:
+* COLUMN_DESCRIPTION:
+```
+	"[VARIABLE NAME]:" {TEXT TO EXTRACT FOR COLUMN_DESCRIPTION} "Topic and detailed topic:"
+```
+* VALUES_AND_FORMAT:
+```
 	"VALUES AND FORMAT" {TEXT TO EXTRACT FOR VALUES_AND_FORMAT} "FLAGS"
-
-*FLAGS:
+```
+* FLAGS:
+```
 	"FLAGS" {TEXT TO EXTRACT FOR FLAGS} "DESCRIPTION"
-	
+```
 ## Insert method
 
 Then, the extracted informations will be insert into the table TD_UDB_CIT23_METADATA as follow:
-
+```
 INSERT INTO TD_UDB_cIT23_METADATA (COLUMN_NAME, COLUMN_DESCRIPTION, VALUES_AND_FORMAT, FLAGS) 
-VALUES (<VARIABLE NAME>, {TEXT TO EXTRACT FOR COLUMN_DESCRIPTION}, {TEXT TO EXTRACT FOR VALUES_AND_FORMAT}, {TEXT TO EXTRACT FOR FLAGS});
-
+VALUES ([VARIABLE NAME], {TEXT TO EXTRACT FOR COLUMN_DESCRIPTION}, {TEXT TO EXTRACT FOR VALUES_AND_FORMAT}, {TEXT TO EXTRACT FOR FLAGS});
+```
 ## Remaining columns
 
-Then, to finish the mapping it is necessary join the table TD_UDB_CIT23_METADATA with the SYS table ALL_TAB_COLUMNS using COLUMN_NAME as join key.
+Then, to finish the mapping it is necessary join the table TD_UDB_CIT23_METADATA with the SYS table ALL_TAB_COLUMNS using COLUMN_NAME as join-key.
