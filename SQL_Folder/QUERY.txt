@@ -264,3 +264,27 @@ SELECT PARENT_ID
     ,OCCUPATION --OCCUPATION IN MAIN JOB55 Personal Data (P-file)
     ,EMPLOYMENT_STATUS --STATUS IN EMPLOYMENT (MAIN JOB) Personal Data (P-file)
 FROM PARENTS;
+
+
+-- EXTRACT INFORMATION TO CREATE FILE FOR CALIBRATION VARIABLES GENDER AND AGE CLASS
+SELECT  
+        RB030 AS ID,
+            CASE WHEN 
+            2023 - RB080 <= 15 THEN '1' 
+            WHEN 
+            2023 - RB080 > 16 AND 2023 - RB080 <= 24 THEN '2' 
+            WHEN 
+            2023 - RB080 > 24 AND 2023 - RB080 <= 44 THEN '3' 
+            WHEN 
+            2023 - RB080 > 44 AND 2023 - RB080 <= 64 THEN '4'
+            ELSE '5' 
+            END AS classe_eta, 
+        RB090 AS genere,
+        1 AS design_weight
+FROM TD_UDB_cIT23R
+WHERE SUBSTR(RB030,1,8) IN (
+                select DB030 from TD_UDB_cIT23D
+                where DB040 = 'ITC' AND DB100 = 1
+                )
+
+
