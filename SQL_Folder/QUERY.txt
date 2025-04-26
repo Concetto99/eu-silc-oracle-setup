@@ -287,4 +287,27 @@ WHERE SUBSTR(RB030,1,8) IN (
                 where DB040 = 'ITC' AND DB100 = 1
                 )
 
-
+-- EXTRACT INFORMATION TO CREATE FILE FOR CALIBRATION VARIABLES GENDER, AGE CLASS, SECONDARY AND TERTIARY
+SELECT  
+        RB030 AS ID,
+            CASE WHEN 
+            2023 - RB080 <= 15 THEN '1' 
+            WHEN 
+            2023 - RB080 > 16 AND 2023 - RB080 <= 24 THEN '2' 
+            WHEN 
+            2023 - RB080 > 24 AND 2023 - RB080 <= 44 THEN '3' 
+            WHEN 
+            2023 - RB080 > 44 AND 2023 - RB080 <= 64 THEN '4'
+            ELSE '5' 
+            END AS classe_eta, 
+        RB090 AS genere,
+        CASE WHEN pe041>=300 AND pe041<=500 AND 2023 - RB080 BETWEEN 25 AND 64 THEN 1 ELSE 0 END  AS SECONDARY,
+        CASE WHEN pe041>=400 AND pe041<=500 AND 2023 - RB080 BETWEEN 25 AND 39 THEN 1 ELSE 0 END  AS TERTIARY,
+        RB050 AS design_weight
+FROM TD_UDB_cIT23R
+left outer join td_udb_cit23p
+on RB030 = PB030
+WHERE SUBSTR(RB030,1,8) IN (
+                select DB030 from TD_UDB_cIT23D
+                where DB040 = 'ITC' AND DB100 = 1
+                )
