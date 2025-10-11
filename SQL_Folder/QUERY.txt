@@ -313,7 +313,7 @@ WHERE SUBSTR(RB030,1,8) IN (
                 )
 
 -- OFFICIAL DATASET FOR IPF
-SELECT  
+SELECT
             RB030 AS ID,
             CASE WHEN RB090 = 1 THEN 0 ELSE 1 END AS FEMALE,
             CASE WHEN HB120 >= 6 THEN 6 ELSE HB120 END AS MEMBER,
@@ -327,14 +327,14 @@ SELECT
             2023 - RB080 > 44 AND 2023 - RB080 <= 64 THEN 4
             ELSE 5 
             END AS AGE_CLASS,
-        CASE WHEN pe041>=300 AND pe041<=500 AND 2023 - RB080 BETWEEN 25 AND 64 THEN 1 ELSE 0 END  AS SECONDARY,
-        CASE WHEN pe041>=400 AND pe041<=500 AND 2023 - RB080 BETWEEN 25 AND 39 THEN 1 ELSE 0 END  AS TERTIARY
+            CASE WHEN pe041>=300 AND pe041<=500 AND 2023 - RB080 BETWEEN 25 AND 64 THEN 1 ELSE 0 END  AS SECONDARY,
+            CASE WHEN pe041>=400 AND pe041<=500 AND 2023 - RB080 BETWEEN 25 AND 39 THEN 1 ELSE 0 END  AS TERTIARY
 FROM TD_UDB_cIT23R
-left outer join td_udb_cit23p
-on RB030 = PB030
-left outer join td_udb_cit23h
-on SUBSTR(RB030,1,8) = HB030
-WHERE SUBSTR(RB030,1,8) IN (
+	left outer join td_udb_cit23p
+	on RB030 = PB030
+		left outer join td_udb_cit23h
+		on RX030 = HB030
+WHERE RX030 IN (
                 select DB030 from TD_UDB_cIT23D
                 where DB040 = 'ITC' AND DB100 = 1
-                );
+            );
